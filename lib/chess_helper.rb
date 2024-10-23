@@ -21,9 +21,9 @@ module ChessHelper
     7 => "h"
 	}
 
-
+	# methods to convert from [letter, number] coords to index and vice versa
  	def coord_to_index(x, y)
-		return nil unless MAPPING.keys.include?(x) && (1..8).include?(y)
+		return [nil, nil] unless MAPPING.keys.include?(x) && (1..8).include?(y)
 
 		x_coord = MAPPING[x]
 		y_coord = (8 - (y))
@@ -32,7 +32,7 @@ module ChessHelper
 	end
 
 	def index_to_coord(index)
-		return nil unless (0..63).include?(index)
+		return [nil, nil] unless (0..63).include?(index)
 
 		#find row (letter from a to h)
 		row = INDEXES_MAPPING[index % 8]

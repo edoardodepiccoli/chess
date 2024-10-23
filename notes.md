@@ -74,6 +74,8 @@ every piece should have
 - a color property
 - a function like possible_moves(current_index) that returns an array with all the possible indexes where it could move if nothing was there (in range 0..63 of course)
 
+create function to print the board as an array to visualize it better
+
 
 
 

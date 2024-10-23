@@ -23,8 +23,8 @@ describe King do
 		end
 
 		context "when king in 53 => (f, 2)" do
-			it "should return [44, 45, 46, 53, 54, 60, 61, 62]" do
-				expect(king.possible_moves(53)).to eql([44, 45, 46, 53, 54, 60, 61, 62])
+			it "should return [44, 45, 46, 52, 54, 60, 61, 62]" do
+				expect(king.possible_moves(53)).to eql([44, 45, 46, 52, 54, 60, 61, 62])
 			end
 		end
 	end

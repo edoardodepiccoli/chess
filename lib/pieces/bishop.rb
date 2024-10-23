@@ -1,9 +1,12 @@
 require_relative "piece"
 
 class Bishop < Piece
+	attr_reader :unicode
+
 	def initialize(color = "white")
 		super(color)
 		@name = "bishop"
+		@unicode = ["\u2657", "\u265D"]
 	end
 
 	def possible_moves(current_index)

@@ -24,12 +24,12 @@ describe Board do
 		end
 
 		context "when coordinates are not valid" do
-			it "should return nil given (x, 0)" do
-				expect(board.coord_to_index("x", 0)).to eql(nil)
+			it "should return [nil, nil] given (x, 0)" do
+				expect(board.coord_to_index("x", 0)).to eql([nil, nil])
 			end
 
-			it "should return nil given (a, 99)" do
-				expect(board.coord_to_index("a", 99)).to eql(nil)
+			it "should return [nil, nil] given (a, 99)" do
+				expect(board.coord_to_index("a", 99)).to eql([nil, nil])
 			end
 		end
 	end
@@ -54,12 +54,12 @@ describe Board do
 		end
 
 		context "when coordinates are not valid" do
-			it "should return nil when given 999" do
-				expect(board.index_to_coord(999)).to eql(nil)
+			it "should return [nil, nil] when given 999" do
+				expect(board.index_to_coord(999)).to eql([nil, nil])
 			end
 
-			it "should return nil when given -12" do
-				expect(board.index_to_coord(-12)).to eql(nil)
+			it "should return [nil, nil] when given -12" do
+				expect(board.index_to_coord(-12)).to eql([nil, nil])
 			end
 		end
 	end
