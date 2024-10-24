@@ -25,33 +25,44 @@ class Board
 		end
 	end
 
+	def move_piece(start_row, start_col, end_row, end_col)
+		piece = piece_at(start_row, start_col)
+		@board[end_row][end_col] = piece
+		@board[start_row][start_col] = nil
+	end
+
 	private
 
-	def display_cell(row_index, col_index)
-		if cell_empty?(row_index, col_index)
-			display_empty_cell(row_index, col_index) 
+	def display_cell(row, col)
+		if cell_empty?(row, col)
+			display_empty_cell(row, col) 
 		else
-			piece_to_display = @board[row_index][col_index]
-			display_piece(piece_to_display, row_index, col_index)
+			display_piece(row, col)
 		end
 	end
 
-	def display_piece(piece_to_display, row_index, col_index)
-		print " #{piece_to_display.unicode[0]} ".colorize(:background => cell_color(row_index, col_index)) if piece_to_display.color == :white
-		print " #{piece_to_display.unicode[1]} ".colorize(:background => cell_color(row_index, col_index)) if piece_to_display.color == :black
+	def piece_at(row, col)
+		@board[row][col]
 	end
 
-	def display_empty_cell(row_index, col_index)
-		print '   '.colorize(:background => cell_color(row_index, col_index))
+	def display_piece(row, col)
+		piece_to_display = piece_at(row, col)
+
+		print " #{piece_to_display.unicode[0]} ".colorize(:background => cell_color(row, col)) if piece_to_display.color == :white
+		print " #{piece_to_display.unicode[1]} ".colorize(:background => cell_color(row, col)) if piece_to_display.color == :black
 	end
 
-	def cell_empty?(row_index, col_index)
-		true if @board[row_index][col_index].nil?
+	def display_empty_cell(row, col)
+		print '   '.colorize(:background => cell_color(row, col))
 	end
 
-	def cell_color(row_index, col_index)
-		return :red if (row_index + col_index).odd?
-		return :white if (row_index + col_index).even?
+	def cell_empty?(row, col)
+		true if @board[row][col].nil?
+	end
+
+	def cell_color(row, col)
+		return :red if (row + col).odd?
+		return :white if (row + col).even?
 	end
 
 	def initialize_pieces
