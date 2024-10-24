@@ -16,22 +16,41 @@ class Board
 	end
 
 	def display_board
+		print("  0  1  2  3  4  5  6  7 \n")
 		@board.each_with_index do |row, row_index|
+			print(row_index)
 			row.each_with_index do |col, col_index|
 				display_cell(row_index, col_index)
 
-				print "\n" if col_index == 7
+				print "#{row_index}\n" if col_index == 7
 			end
 		end
+		print("  0  1  2  3  4  5  6  7 \n")
 	end
+
+	def make_move(start_row, start_col, end_row, end_col)
+		move_piece(start_row, start_col, end_row, end_col)
+	end
+
+	def move_valid?(start_row, start_col, end_row, end_col, player_color)
+		if cell_empty?(start_row, start_col) || piece_at(start_row, start_col).color != player_color
+			puts "starting position of the move invalid"
+			return false 
+		end
+		if !piece_at(end_row, end_col).nil? && piece_at(end_row, end_col).color == player_color
+			puts "ending position of the move invalid"
+			return false 
+		end
+		true
+	end
+
+	private
 
 	def move_piece(start_row, start_col, end_row, end_col)
 		piece = piece_at(start_row, start_col)
 		@board[end_row][end_col] = piece
 		@board[start_row][start_col] = nil
 	end
-
-	private
 
 	def display_cell(row, col)
 		if cell_empty?(row, col)

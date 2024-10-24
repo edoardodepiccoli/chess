@@ -1,6 +1,4 @@
-require_relative 'board'
+require_relative 'game'
 
-board = Board.new
-board.display_board
-board.move_piece(1, 0, 2, 0)
-board.display_board
+game = Game.new
+game.play
