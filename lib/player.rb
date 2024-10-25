@@ -9,6 +9,7 @@ class Player
 		input = gets.chomp
 
 		until input_valid?(input)
+			print "enter a valid move: "
 			input = gets.chomp
 		end
 

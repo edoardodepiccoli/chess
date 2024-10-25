@@ -15,6 +15,8 @@ require_relative "pieces/king"
 class Board
 	include ChessHelper
 
+	attr_reader :board
+
 	def initialize
 		@board = Array.new(8) { Array.new(8) }
 
@@ -33,28 +35,37 @@ class Board
 		print "   a  b  c  d  e  f  g  h \n"
 	end
 
+	def handle_move(move)
+		make_move(move)
+	end
+
 	private
 
-	def print_cell_at(position)
-		x, y = position
-		cell_color = (x + y).even? ? :none : :red
+	def make_move(move)
+		start_position, end_position = ChessHelper.parse_algebraic_move(move)
+		place_piece(piece_at(start_position), end_position)
+		empty_cell(start_position)
+	end
 
-		print_empty_cell([x, y]) if cell_empty?([x, y])
-		print_piece([x, y]) unless cell_empty?([x, y])
+	# utilities to print the board
+	def print_cell_at(position)
+		cell_color = (position.sum).even? ? :none : :red
+
+		print_empty_cell(position) if cell_empty?(position)
+		print_piece(position) unless cell_empty?(position)
 	end
 
 	def print_empty_cell(position)
-		x, y = position
-		cell_color = (x + y).even? ? :none : :red
+		cell_color = (position.sum).even? ? :none : :red
 		print "   ".colorize(:background => cell_color)
 	end
 
 	def print_piece(position)
-		x, y = position
-		cell_color = (x + y).even? ? :none : :red
-		current_piece = piece_at([x, y])
+		cell_color = (position.sum).even? ? :none : :red
+		current_piece = piece_at(position)
 		print " #{current_piece.unicode} ".colorize(current_piece.color).colorize(:background => cell_color)
 	end
+	# end utilities to print the board
 
 	def piece_at(position)
 		x, y = position
@@ -95,6 +106,15 @@ class Board
 	def place_piece(piece, position)
 		x, y = position
 		@board[y][x] = piece
+	end
+
+	def empty_cell(position)
+		x, y = position
+		@board[y][x] = nil
+	end
+
+	def clear_board
+		@board = Array.new(8) { Array.new(8) }
 	end
 end
 
