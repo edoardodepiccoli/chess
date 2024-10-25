@@ -40,10 +40,14 @@ class Board
 		true
 	end
 
+	def piece_at(row, col)
+		@board.dig(row, col)
+	end
+
 	private
 
 	def move_possible?(piece, start_row, start_col, end_row, end_col, player_color)
-		unless piece_at(start_row, start_col).possible_moves(start_row, start_col, player_color, self).include?([end_row, end_col])
+		unless piece.possible_moves(start_row, start_col, player_color, self).include?([end_row, end_col])
 			puts "piece cannot move there"
 			return false
 		end
@@ -84,10 +88,6 @@ class Board
 		else
 			display_piece(row, col)
 		end
-	end
-
-	def piece_at(row, col)
-		@board[row][col]
 	end
 
 	def display_piece(row, col)
