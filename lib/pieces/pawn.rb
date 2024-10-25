@@ -11,8 +11,6 @@ class Pawn < Piece
 	end
 
 	def possible_moves(start_row, start_col, player_color, board)
-		puts "validating pawn available moves"
-
 		move_direction = player_color == :white ? -1 : 1
 
 		if @has_not_moved_yet

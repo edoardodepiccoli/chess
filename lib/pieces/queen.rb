@@ -9,8 +9,6 @@ class Queen < Piece
 	end
 
 	def possible_moves(start_row, start_col, player_color, board)
-		puts "validating queen available moves"
-
 		possible_moves = []
 
 		steps = [

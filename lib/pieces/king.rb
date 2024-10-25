@@ -9,7 +9,6 @@ class King < Piece
 	end
 
 	def possible_moves(start_row, start_col, player_color, board)
-		puts "validating king available moves"
 		return [
 			[start_row - 1, start_col - 1], [start_row - 1, start_col], [start_row - 1, start_col + 1],
 			[start_row, start_col - 1], [start_row, start_col + 1],

@@ -15,6 +15,16 @@ class Board
 		initialize_pieces
 	end
 
+	# methods to test with rspec
+	def clear_board
+		@board = Array.new(8) { Array.new(8) }
+	end
+
+	def place_piece(piece, row, col)
+		@board[row][col] = piece
+	end
+	# end
+
 	def display_board
 		print("  0  1  2  3  4  5  6  7 \n")
 		@board.each_with_index do |row, row_index|
@@ -36,6 +46,7 @@ class Board
 		return false unless starting_position_valid?(start_row, start_col, player_color)
 		return false unless ending_position_valid?(end_row, end_col, player_color)
 		return false unless move_possible?(piece_at(start_row, start_col), start_row, start_col, end_row, end_col, player_color)
+		return false if move_leaves_the_king_in_check?(start_row, start_col, end_row, end_col, player_color)
 
 		true
 	end
@@ -44,7 +55,54 @@ class Board
 		@board.dig(row, col)
 	end
 
+	def king_in_check?(player_color)
+		king_position = find_king(player_color)
+		opponent_valid_moves = []
+
+		@board.each_with_index do |row, row_index|
+			row.each_with_index do |col, col_index|
+				current_piece = piece_at(row_index, col_index)
+
+				next if current_piece.nil?
+
+				unless current_piece.color == player_color
+					opponent_color = player_color == :white ? :black : :white
+					piece_possible_moves = current_piece.possible_moves(row_index, col_index, opponent_color, self)
+
+					valid_moves = piece_possible_moves.filter { |move| move_possible?(current_piece, row_index, col_index, move[0], move[1], opponent_color) }
+					# this method is a mess and I should have breaken it down into smaller ones, test each one of them and made the code easier to understand
+
+					opponent_valid_moves += valid_moves
+				end
+			end
+		end
+
+		return opponent_valid_moves.include?(king_position)
+	end
+
 	private
+
+	def move_leaves_the_king_in_check?(start_row, start_col, end_row, end_col, player_color)
+		temp_board = @board.map { |row| row.dup }
+
+		make_move(start_row, start_col, end_row, end_col)
+		if king_in_check?(player_color)
+			puts "yo watch out, king is in danger with that move!"
+			@board = temp_board.map { |row| row.dup }
+			return true
+		else
+			@board = temp_board.map { |row| row.dup }
+			return false
+		end
+	end
+
+	def find_king(player_color)
+		@board.each_with_index do |row, row_index|
+			row.each_with_index do |col, col_index|
+				return [row_index, col_index] if piece_at(row_index, col_index).instance_of?(King) && piece_at(row_index, col_index).color == player_color
+			end
+		end
+	end
 
 	def move_possible?(piece, start_row, start_col, end_row, end_col, player_color)
 		unless piece.possible_moves(start_row, start_col, player_color, self).include?([end_row, end_col])
@@ -134,8 +192,8 @@ class Board
 		@board[7][0] = Rook.new(:white)
 		@board[7][1] = Knight.new(:white)
 		@board[7][2] = Bishop.new(:white)
-		@board[7][3] = Queen.new(:white)
-		@board[7][4] = King.new(:white)
+		@board[7][3] = King.new(:white)
+		@board[7][4] = Queen.new(:white)
 		@board[7][5] = Bishop.new(:white)
 		@board[7][6] = Knight.new(:white)
 		@board[7][7] = Rook.new(:white)

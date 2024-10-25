@@ -9,7 +9,6 @@ class Knight < Piece
 	end
 
 	def possible_moves(start_row, start_col, player_color, board)
-		puts "validating knight available moves"
 		return [
 			[start_row - 2, start_col - 1], [start_row - 2, start_col + 1],
 			[start_row + 2, start_col - 1], [start_row + 2, start_col + 1],

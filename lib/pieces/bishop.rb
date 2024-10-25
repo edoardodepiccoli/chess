@@ -9,8 +9,6 @@ class Bishop < Piece
 	end
 
 	def possible_moves(start_row, start_col, player_color, board)
-		puts "validating bishop available moves"
-
 		possible_moves = []
 
 		steps = [
