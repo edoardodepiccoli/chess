@@ -27,7 +27,7 @@ class Game
 	def handle_player_move
 		# get a valid move
 		start_row, start_col, end_row, end_col = get_player_move
-		
+
 		# make the move	
 		@board.make_move(start_row, start_col, end_row, end_col)
 	end
@@ -58,13 +58,5 @@ class Game
 
 	def switch_turn
 		@turn = @turn == :white ? :black : :white
-	end
-
-	def test
-		@board.display_board
-		@board.move_piece(1, 0, 2, 0)
-
-		print "\n"
-		@board.display_board
 	end
 end

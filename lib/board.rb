@@ -33,18 +33,34 @@ class Board
 	end
 
 	def move_valid?(start_row, start_col, end_row, end_col, player_color)
-		if cell_empty?(start_row, start_col) || piece_at(start_row, start_col).color != player_color
-			puts "starting position of the move invalid"
-			return false 
-		end
-		if !piece_at(end_row, end_col).nil? && piece_at(end_row, end_col).color == player_color
-			puts "ending position of the move invalid"
-			return false 
-		end
+		return false unless starting_position_valid?(start_row, start_col, player_color)
+		return false unless ending_position_valid?(end_row, end_col, player_color)
+		
 		true
 	end
 
 	private
+
+	def starting_position_valid?(row, col, player_color)
+		if cell_empty?(row, col)
+			puts "you selected an empty cell, retry"
+			return false
+		elsif piece_at(row, col).color != player_color
+			puts "that piece is not yours"
+			return false
+		else
+			return true
+		end
+	end
+
+	def ending_position_valid?(row, col, player_color)
+		if !piece_at(row, col).nil? && piece_at(row, col).color == player_color
+			puts "looks like you want to eat your own piece, duh. retry"
+			return false
+		else
+			return true
+		end
+	end
 
 	def move_piece(start_row, start_col, end_row, end_col)
 		piece = piece_at(start_row, start_col)
