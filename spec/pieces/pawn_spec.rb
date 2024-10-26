@@ -10,13 +10,13 @@ describe King do
 			it "should return two vertical moves" do
 				board = Board.new
 
-				expect(white_pawn.available_moves("b2", board)).to eql(["b3", "b4"])
+				expect(white_pawn.available_moves("b2", board)).to eql(["b3", "b4"].sort)
 			end
 
 			it "should return two vertical moves" do
 				board = Board.new
 
-				expect(black_pawn.available_moves("e7", board)).to eql(["e6", "e5"])
+				expect(black_pawn.available_moves("e7", board)).to eql(["e6", "e5"].sort)
 			end
 		end
 
@@ -93,7 +93,7 @@ describe King do
 					[Knight, :black, ["e3"]]
 				])
 
-				expect(white_pawn.available_moves("d2", board)).to eql(["d3", "d4", "e3"])
+				expect(white_pawn.available_moves("d2", board)).to eql(["d3", "d4", "e3"].sort)
 			end
 		end 
 
@@ -106,11 +106,11 @@ describe King do
 					[Knight, :black, ["c5"]]
 				])
 
-				expect(white_pawn.available_moves("d4", board)).to eql(["d5", "c5"])
+				expect(white_pawn.available_moves("d4", board)).to eql(["d5", "c5"].sort)
 			end
 		end
 
-		context "when another ally piece is places in eating position and pawn has not moved yet" do
+		context "when another ally piece is in eating position and pawn has not moved yet" do
 			it "should return two vertical moves" do
 				board = Board.new
 				board.send(:clear_board)
@@ -119,12 +119,12 @@ describe King do
 					[Knight, :white, ["e3"]]
 				])
 
-				expect(white_pawn.available_moves("d2", board)).to eql(["d3", "d4"])
+				expect(white_pawn.available_moves("d2", board)).to eql(["d3", "d4"].sort)
 			end
 		end 
 
-		context "when another enemy piece is places in eating position and pawn has already moved" do
-			it "should return one vertical moves" do
+		context "when another enemy piece is in eating position and pawn has already moved" do
+			it "should return one vertical moves and one diagonal move" do
 				board = Board.new
 				board.send(:clear_board)
 
@@ -132,7 +132,7 @@ describe King do
 					[Knight, :black, ["c5"]]
 				])
 
-				expect(white_pawn.available_moves("d4", board)).to eql(["d5"])
+				expect(white_pawn.available_moves("d4", board)).to eql(["d5", "c5"].sort)
 			end
 		end 
 	end
