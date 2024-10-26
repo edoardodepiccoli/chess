@@ -24,4 +24,16 @@ describe ChessHelper do
 			end
 		end
 	end
+
+	describe "#parse_coordinates" do
+		context "when given coordinates" do
+			it "should return a8 given [0, 0]'" do
+				expect(ChessHelper.parse_coordinates([0, 0])).to eql("a8")
+			end
+
+			it "should return d6 given [2, 3]'" do
+				expect(ChessHelper.parse_coordinates([2, 3])).to eql("d6")
+			end
+		end
+	end
 end

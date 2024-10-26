@@ -28,7 +28,7 @@ class Board
 		@board.each_with_index do |row, row_index|
 			print "#{8 - row_index} "
 			row.each_with_index do |col, col_index|
-				print_cell_at([row_index, col_index])
+				print_cell_at(ChessHelper.parse_coordinates([row_index, col_index])) # fix this
 			end
 			print " #{8 - row_index}\n"
 		end
@@ -36,12 +36,12 @@ class Board
 	end
 
 	def cell_empty?(position)
-		row, col = position
+		row, col = ChessHelper.parse_algebraic(position)
 		@board[row][col].nil?
 	end
 
 	def piece_at(position)
-		row, col = position
+		row, col = ChessHelper.parse_algebraic(position)
 		@board[row][col]
 	end
 
@@ -54,7 +54,8 @@ class Board
 	end
 
 	def make_move(move)
-		start_position, end_position = ChessHelper.parse_algebraic_move(move)
+		start_position, end_position = move.split(" ")
+
 		place_piece(piece_at(start_position), end_position)
 		empty_cell(start_position)
 	end
@@ -62,10 +63,10 @@ class Board
 	private
 
 	def move_is_available?(player, move)
-		start_position, end_position = ChessHelper.parse_algebraic_move(move)
+		start_position, end_position = move.split(" ")
 
 		unless piece_at(start_position).available_moves(start_position, self).include?(end_position)
-			print "that piee cannot go there, try again: "
+			print "that piece cannot go there, try again: "
 			return false
 		end
 
@@ -73,7 +74,7 @@ class Board
 	end
 
 	def selected_empty_cell?(move)
-		start_position, end_position = ChessHelper.parse_algebraic_move(move)
+		start_position, end_position = move.split(" ")
 
 		if cell_empty?(start_position)
 			print "cell empty, try again: "
@@ -84,7 +85,7 @@ class Board
 	end
 
 	def selected_right_color?(player, move)
-		start_position, end_position = ChessHelper.parse_algebraic_move(move)
+		start_position, end_position = move.split(" ")
 
 		if piece_at(start_position).color != player.color
 			print "that piece is not yours, try again: "
@@ -96,7 +97,7 @@ class Board
 
 	# utilities to print the board
 	def print_cell_at(position)
-		cell_color = (position.sum).even? ? :none : :red
+		cell_color = (ChessHelper.parse_algebraic(position).sum).even? ? :none : :red
 
 		print_empty_cell(position) if cell_empty?(position)
 		print_piece(position) unless cell_empty?(position)
@@ -134,19 +135,18 @@ class Board
 	def place_new_pieces(entries)
 		entries.each do |entry|
 			entry[2].each do |position|
-				position = ChessHelper.parse_algebraic(position)
 				place_piece(entry[0].new(entry[1]), position)
 			end
 		end
 	end
 
 	def place_piece(piece, position)
-		row, col = position
+		row, col = ChessHelper.parse_algebraic(position)
 		@board[row][col] = piece
 	end
 
 	def empty_cell(position)
-		row, col = position
+		row, col = ChessHelper.parse_algebraic(position)
 		@board[row][col] = nil
 	end
 

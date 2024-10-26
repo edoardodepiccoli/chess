@@ -10,6 +10,8 @@ module ChessHelper
 		"h" => 7
 	}
 
+	REVERSE_MAPPING = MAPPING.invert
+
 	def self.parse_algebraic(algebraic_position)
 		letter, number = algebraic_position.split("")
 
@@ -25,5 +27,14 @@ module ChessHelper
 		end_position = parse_algebraic(end_position)
 
 		return [start_position, end_position]
+	end
+
+	def self.parse_coordinates(coordinates)
+		row, col = coordinates
+
+		letter = REVERSE_MAPPING[col]
+		number = 8 - row
+		
+		"#{letter}#{number}"
 	end
 end
