@@ -46,10 +46,9 @@ class Board
 	end
 
 	def move_valid?(player, move)
-
 		return false if selected_empty_cell?(move)
 		return false unless selected_right_color?(player, move)
-		# return false unless move_is_available?(player, move)
+		return false unless move_is_available?(player, move)
 
 		true
 	end
@@ -136,7 +135,6 @@ class Board
 		entries.each do |entry|
 			entry[2].each do |position|
 				position = ChessHelper.parse_algebraic(position)
-				puts "positioning #{entry[1]} #{entry[0]} at #{position}"
 				place_piece(entry[0].new(entry[1]), position)
 			end
 		end

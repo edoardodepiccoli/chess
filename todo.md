@@ -1,1 +1,0 @@
-- add available_moves method for all pieces

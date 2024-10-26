@@ -16,7 +16,7 @@ module ChessHelper
 		col = MAPPING[letter]
 		row = 8 - (number.to_i)
 
-		return [row, col] # row, col
+		return [row, col]
 	end
 
 	def self.parse_algebraic_move(algebraic_move)
