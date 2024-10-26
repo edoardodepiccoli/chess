@@ -35,11 +35,63 @@ class Board
 		print "   a  b  c  d  e  f  g  h \n"
 	end
 
-	def handle_move(move)
-		make_move(move)
+	def handle_move(player, move)
+		make_move(move) if move_valid?(player, move)
+	end
+
+	def cell_empty?(position)
+		x, y = position
+		@board[y][x].nil?
+	end
+
+	def piece_at(position)
+		x, y = position
+		@board[y][x]
 	end
 
 	private
+
+	def move_valid?(player, move)
+
+		return false if selected_empty_cell?(move)
+		return false unless selected_right_color?(player, move)
+		return false unless move_is_available?(player, move)
+
+		true
+	end
+
+	def move_is_available?(player, move)
+		start_position, end_position = ChessHelper.parse_algebraic_move(move)
+
+		unless piece_at(start_position).available_moves(start_position, self).include?(end_position)
+			print "that piee cannot go there, try again: "
+			return false
+		end
+
+		true
+	end
+
+	def selected_empty_cell?(move)
+		start_position, end_position = ChessHelper.parse_algebraic_move(move)
+
+		if cell_empty?(start_position)
+			print "cell empty, try again: "
+			return true
+		end
+
+		false
+	end
+
+	def selected_right_color?(player, move)
+		start_position, end_position = ChessHelper.parse_algebraic_move(move)
+
+		if piece_at(start_position).color != player.color
+			print "that piece is not yours, try again: "
+			return false
+		end
+
+		true
+	end
 
 	def make_move(move)
 		start_position, end_position = ChessHelper.parse_algebraic_move(move)
@@ -66,16 +118,6 @@ class Board
 		print " #{current_piece.unicode} ".colorize(current_piece.color).colorize(:background => cell_color)
 	end
 	# end utilities to print the board
-
-	def piece_at(position)
-		x, y = position
-		@board[y][x]
-	end
-
-	def cell_empty?(position)
-		x, y = position
-		@board[y][x].nil?
-	end
 
 	def initialize_board
 		place_new_pieces([

@@ -6,7 +6,7 @@ class Piece
 		@unicode = "\u265A"
 	end
 
-	def available_moves
+	def available_moves(current_position, board)
 		[]
 	end
 end

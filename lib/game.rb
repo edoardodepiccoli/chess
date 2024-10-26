@@ -20,7 +20,7 @@ class Game
 		current_player = @players[@turn]
 		print "player #{current_player.color}, make a move: "
 		player_move = current_player.get_move
-		@board.handle_move(player_move)
+		@board.handle_move(current_player, player_move)
 
 		switch_turn
 
