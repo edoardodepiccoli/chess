@@ -20,10 +20,14 @@ class Game
 		current_player = @players[@turn]
 		print "player #{current_player.color}, make a move: "
 		player_move = current_player.get_move
-		@board.handle_move(current_player, player_move)
+
+		until @board.move_valid?(current_player, player_move)
+			player_move = current_player.get_move
+		end
+
+		@board.make_move(player_move)
 
 		switch_turn
-
 		play_round
 	end
 

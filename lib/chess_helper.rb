@@ -13,10 +13,10 @@ module ChessHelper
 	def self.parse_algebraic(algebraic_position)
 		letter, number = algebraic_position.split("")
 
-		x = MAPPING[letter]
-		y = 8 - (number.to_i)
+		col = MAPPING[letter]
+		row = 8 - (number.to_i)
 
-		return [x, y]
+		return [row, col] # row, col
 	end
 
 	def self.parse_algebraic_move(algebraic_move)

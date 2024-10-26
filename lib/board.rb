@@ -28,37 +28,39 @@ class Board
 		@board.each_with_index do |row, row_index|
 			print "#{8 - row_index} "
 			row.each_with_index do |col, col_index|
-				print_cell_at([col_index, row_index]) # x is col, y is row
+				print_cell_at([row_index, col_index])
 			end
 			print " #{8 - row_index}\n"
 		end
 		print "   a  b  c  d  e  f  g  h \n"
 	end
 
-	def handle_move(player, move)
-		make_move(move) if move_valid?(player, move)
-	end
-
 	def cell_empty?(position)
-		x, y = position
-		@board[y][x].nil?
+		row, col = position
+		@board[row][col].nil?
 	end
 
 	def piece_at(position)
-		x, y = position
-		@board[y][x]
+		row, col = position
+		@board[row][col]
 	end
-
-	private
 
 	def move_valid?(player, move)
 
 		return false if selected_empty_cell?(move)
 		return false unless selected_right_color?(player, move)
-		return false unless move_is_available?(player, move)
+		# return false unless move_is_available?(player, move)
 
 		true
 	end
+
+	def make_move(move)
+		start_position, end_position = ChessHelper.parse_algebraic_move(move)
+		place_piece(piece_at(start_position), end_position)
+		empty_cell(start_position)
+	end
+
+	private
 
 	def move_is_available?(player, move)
 		start_position, end_position = ChessHelper.parse_algebraic_move(move)
@@ -91,12 +93,6 @@ class Board
 		end
 
 		true
-	end
-
-	def make_move(move)
-		start_position, end_position = ChessHelper.parse_algebraic_move(move)
-		place_piece(piece_at(start_position), end_position)
-		empty_cell(start_position)
 	end
 
 	# utilities to print the board
@@ -140,19 +136,20 @@ class Board
 		entries.each do |entry|
 			entry[2].each do |position|
 				position = ChessHelper.parse_algebraic(position)
+				puts "positioning #{entry[1]} #{entry[0]} at #{position}"
 				place_piece(entry[0].new(entry[1]), position)
 			end
 		end
 	end
 
 	def place_piece(piece, position)
-		x, y = position
-		@board[y][x] = piece
+		row, col = position
+		@board[row][col] = piece
 	end
 
 	def empty_cell(position)
-		x, y = position
-		@board[y][x] = nil
+		row, col = position
+		@board[row][col] = nil
 	end
 
 	def clear_board
