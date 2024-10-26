@@ -5,4 +5,8 @@ class Piece
 		@color = color
 		@unicode = "\u265A"
 	end
+
+	def available_moves
+		[]
+	end
 end
