@@ -61,7 +61,35 @@ class Board
 		empty_cell(start_position)
 	end
 
+	def checkmate?(player)
+		color = player.color
+		
+		return true unless player_has_available_moves?(player)
+
+		false
+	end
+
 	private
+
+	def player_has_available_moves?(player)
+		color = player.color
+
+		all_available_moves = []
+
+		@board.each_with_index do |row, row_index|
+			row.each_with_index do |piece, col_index|
+				next if cell_empty?(ChessHelper.parse_coordinates([row_index, col_index]))
+				next if piece_at(ChessHelper.parse_coordinates([row_index, col_index])).color != color
+
+				all_available_moves += piece_at(ChessHelper.parse_coordinates([row_index, col_index])).available_moves(ChessHelper.parse_coordinates([row_index, col_index]), self)
+				.map { |end_position| "#{ChessHelper.parse_coordinates([row_index, col_index])} #{end_position}" }
+			end
+		end
+
+		return false if all_available_moves.all? { |move| move_leaves_king_in_danger?(player, move) }
+
+		true
+	end
 
 	def move_leaves_king_in_danger?(player, move)
 		color = player.color

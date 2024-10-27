@@ -18,6 +18,15 @@ class Game
 		@board.print_board
 
 		current_player = @players[@turn]
+		if @board.checkmate?(current_player)
+			system "clear"
+			@board.print_board
+			puts "checkmate for #{current_player.color}:"
+			switch_turn
+			puts "#{current_player.color} wins!"
+			return
+		end
+
 		print "player #{current_player.color}, make a move: "
 		player_move = current_player.get_move
 

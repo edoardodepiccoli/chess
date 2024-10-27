@@ -90,6 +90,56 @@ describe Board do
 			end
 		end
 	end
+
+	describe "#checkmate?" do
+		context "when it is not checkmate" do
+			it "should return false" do
+				player = double
+				allow(player).to receive(:color).and_return(:white)
+
+				board.send(:clear_board)
+
+				board.send(:place_new_pieces, [
+					[King, :white, ["h8"]], 
+					[Rook, :black, ["h1"]]
+				])
+
+				expect(board.send(:checkmate?, player)).to eql(false)
+			end
+
+			it "should return false" do
+				player = double
+				allow(player).to receive(:color).and_return(:white)
+
+				board.send(:clear_board)
+
+				board.send(:place_new_pieces, [
+					[King, :white, ["h8"]], 
+					[Bishop, :black, ["a1"]],
+					[Rook, :white, ["d1"]]
+				])
+
+				expect(board.send(:checkmate?, player)).to eql(false)
+			end
+		end
+
+		context "when it is checkmate" do
+			it "should return true" do
+				player = double
+				allow(player).to receive(:color).and_return(:white)
+
+				board.send(:clear_board)
+
+				board.send(:place_new_pieces, [
+					[King, :white, ["h8"]], 
+					[Rook, :black, ["h1", "a8"]],
+					[Bishop, :black, ["a1"]]
+				])
+
+				expect(board.send(:checkmate?, player)).to eql(true)
+			end
+		end
+	end
 end
 
 
