@@ -15,6 +15,7 @@ This version of the game is nearly complete, but there are a few features left t
 
 ### Planned Improvements 📌
 Here’s what I’d like to add and refine as I continue improving the project:
+- [ ] Clean up code by removing the many ChessHelper module calls
 - [ ] Refactor code to be cleaner and less redundant
 - [ ] Improve user feedback for a more polished experience
 
