@@ -7,35 +7,38 @@ class Pawn < Piece
 	end
 
 	def available_moves(current_position, board)
-		moves = []
-
 		current_position = ChessHelper.parse_algebraic(current_position)
 
-		starting_col = @color == :white ? 6 : 1
-		move_direction = @color == :white ? -1 : 1
+		has_not_moved_yet = in_starting_row?(current_position)
+		row_move_direction = @color == :white ? -1 : 1
 
-		has_not_moved_yet = current_position[0] == starting_col ? true : false
+		steps = has_not_moved_yet ? [[row_move_direction, 0], [row_move_direction * 2, 0]] : [[row_move_direction, 0]]
+		eating_steps = [[row_move_direction, 1], [row_move_direction, -1]]
 
-		first_vertical_move = ChessHelper.parse_coordinates([current_position[0] + move_direction, current_position[1]])
-		second_vertical_move = ChessHelper.parse_coordinates([current_position[0] + move_direction * 2, current_position[1]])
-		eat_left_move = ChessHelper.parse_coordinates([current_position[0] + move_direction, current_position[1] - 1])
-		eat_right_move = ChessHelper.parse_coordinates([current_position[0] + move_direction, current_position[1] + 1])
+		available_basic_moves = steps
+		.map { |step| [current_position[0] + step[0], current_position[1] + step[1]] }
+		.filter { |position| position[0].between?(0, 7) && position[1].between?(0, 7) }
+		.filter { |position| board.cell_empty?(ChessHelper.parse_coordinates(position)) }
+		.map { |position| ChessHelper.parse_coordinates(position) }
+		.sort
 
-		if board.cell_empty?(first_vertical_move)
-			moves.push(first_vertical_move)
-			if board.cell_empty?(second_vertical_move) && has_not_moved_yet
-				moves.push(second_vertical_move)
-			end
-		end
+		available_eating_moves = eating_steps
+		.map { |step| [current_position[0] + step[0], current_position[1] + step[1]] }
+		.filter { |position| position[0].between?(0, 7) && position[1].between?(0, 7) }
+		.filter { |position| !board.cell_empty?(ChessHelper.parse_coordinates(position)) && board.piece_at(ChessHelper.parse_coordinates(position)).color != @color }
+		.map { |position| ChessHelper.parse_coordinates(position) }
+		.sort
 
-		if !board.cell_empty?(eat_left_move) && board.piece_at(eat_left_move).color != @color
-			moves.push(eat_left_move)
-		end
+		(available_basic_moves + available_eating_moves).sort
+	end
 
-		if !board.cell_empty?(eat_right_move) && board.piece_at(eat_right_move).color != @color
-			moves.push(eat_right_move)
-		end
-
-		moves.sort
+	def in_starting_row?(current_position)
+		starting_row = @color == :white ? 6 : 1
+		current_position[0] == starting_row
 	end
 end
+
+
+
+
+

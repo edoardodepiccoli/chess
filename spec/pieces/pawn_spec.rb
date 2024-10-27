@@ -5,6 +5,8 @@ describe King do
 	subject(:white_pawn) { Pawn.new(:white) }
 	subject(:black_pawn) { Pawn.new(:black) }
 
+	let(:pawn_double) { double }
+
 	describe "#available_moves" do
 		context "after board just got initialized and pawn has not yet moved" do
 			it "should return two vertical moves" do
@@ -134,7 +136,7 @@ describe King do
 
 				expect(white_pawn.available_moves("d4", board)).to eql(["d5", "c5"].sort)
 			end
-		end 
+		end
 	end
 end
 
