@@ -49,6 +49,7 @@ class Board
 		return false if selected_empty_cell?(move)
 		return false unless selected_right_color?(player, move)
 		return false unless move_is_available?(player, move)
+		return false if move_leaves_king_in_danger?(player, move)
 
 		true
 	end
@@ -61,6 +62,22 @@ class Board
 	end
 
 	private
+
+	def move_leaves_king_in_danger?(player, move)
+		color = player.color
+
+		temp = @board.map(&:dup)
+
+		make_move(move)
+		if king_in_danger?(color)
+			print "move leaves the king in danger! try another one: "
+			@board = temp.map(&:dup)
+			return true
+		end
+
+		@board = temp.map(&:dup)
+		false
+	end
 
 	def king_in_danger?(color)
 		king_position = find_king(color)
