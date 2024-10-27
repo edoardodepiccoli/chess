@@ -14,7 +14,7 @@ class King < Piece
 		available_moves = steps
 		.map { |step| [current_position[0] + step[0], current_position[1] + step[1]] }
 		.filter { |position| position[0].between?(0, 7) && position[1].between?(0, 7) }
-		.filter { |position| board.cell_empty?(ChessHelper.parse_coordinates(position)) || board.piece_at(ChessHelper.parse_coordinates(position)).color != @color}
+		.filter { |position| board.cell_empty?(ChessHelper.parse_coordinates(position)) || board.piece_at(ChessHelper.parse_coordinates(position)).color != @color }
 		.map { |position| ChessHelper.parse_coordinates(position) }
 		.sort
 	end
