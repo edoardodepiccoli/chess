@@ -62,6 +62,33 @@ class Board
 
 	private
 
+	def king_in_danger?(color)
+		king_position = find_king(color)
+		# loop through all the opponent's pieces and find if there is one that
+		# has the king's position inside its available moves
+		@board.each_with_index do |row, row_index|
+			row.each_with_index do |piece, col_index|
+				next if cell_empty?(ChessHelper.parse_coordinates([row_index, col_index]))
+				next if piece_at(ChessHelper.parse_coordinates([row_index, col_index])).color == color
+
+				available_moves = piece_at(ChessHelper.parse_coordinates([row_index, col_index])).available_moves(ChessHelper.parse_coordinates([row_index, col_index]), self)
+				return true if available_moves.include?(king_position)
+			end
+		end
+
+		false
+	end
+
+	def find_king(color)
+		@board.each_with_index do |row, row_index|
+			row.each_with_index do |piece, col_index|
+				if piece.is_a?(Piece)
+					return ChessHelper.parse_coordinates([row_index, col_index]) if piece.is_a?(King) && piece.color == color
+				end
+			end
+		end
+	end
+
 	def move_is_available?(player, move)
 		start_position, end_position = move.split(" ")
 
