@@ -22,6 +22,7 @@ Here’s what I’d like to add and refine as I continue improving the project:
 - **En passant** and **castling**: I’m planning to add a state tracker for the king and rooks to manage castling, plus some checks in the board class to ensure a clear path. For en passant, I’ll need to track the last piece moved and handle pawn captures specifically.
 - **Pawn promotion** should be simple, but I’ll need to track each player's lost pieces to handle this fully.
 - **Serialization**: Should be straightforward, though I need to brush up a bit on the technique.
+- **Stalemate**
 
 I estimate these improvements should take around 10 hours (not including the full refactor).
 
