@@ -277,22 +277,21 @@ class Board
   # end utilities to print the board
 
   def initialize_board
-    # place_new_pieces([
-    #                    [Pawn, :black, ['a7', 'b7', 'c7', 'd7', 'e7', 'f7', 'g7', 'h7']],
-    #                    [Pawn, :white, ['a2', 'b2', 'c2', 'd2', 'e2', 'f2', 'g2', 'h2']],
-    #                    [Rook, :black, ['a8', 'h8']],
-    #                    [Rook, :white, ['a1', 'h1']],
-    #                    [Knight, :black, ['b8', 'g8']],
-    #                    [Knight, :white, ['b1', 'g1']],
-    #                    [Bishop, :black, ['c8', 'f8']],
-    #                    [Bishop, :white, ['c1', 'f1']],
-    #                    [King, :black, ['e8']],
-    #                    [King, :white, ['e1']],
-    #                    [Queen, :black, ['d8']],
-    #                    [Queen, :white, ['d1']]
-    #                  ])
+    place_new_pieces([
+                       [Pawn, :black, ['a7', 'b7', 'c7', 'd7', 'e7', 'f7', 'g7', 'h7']],
+                       [Pawn, :white, ['a2', 'b2', 'c2', 'd2', 'e2', 'f2', 'g2', 'h2']],
+                       [Rook, :black, ['a8', 'h8']],
+                       [Rook, :white, ['a1', 'h1']],
+                       [Knight, :black, ['b8', 'g8']],
+                       [Knight, :white, ['b1', 'g1']],
+                       [Bishop, :black, ['c8', 'f8']],
+                       [Bishop, :white, ['c1', 'f1']],
+                       [King, :black, ['e8']],
+                       [King, :white, ['e1']],
+                       [Queen, :black, ['d8']],
+                       [Queen, :white, ['d1']]
+                     ])
 
-    place_new_pieces([[Rook, :white, %w[a1 h1]], [King, :white, ['e1']], [Rook, :black, %w[a8]],])
     @last_move = {
       piece: nil,
       move: ""
