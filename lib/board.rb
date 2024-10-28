@@ -75,10 +75,27 @@ class Board
 
   def make_move(move)
     start_position, end_position = move.split(' ')
+    piece_to_move = piece_at(start_position)
+    piece_to_eat = piece_at(end_position)
+
+    if piece_to_move.is_a?(Rook) || piece_to_eat.is_a?(King)
+      piece_to_move.has_not_moved_yet = false
+    end
+
+    if piece_to_move.is_a?(King) &&
+       piece_to_eat.is_a?(Rook) &&
+       piece_to_move.color == piece_to_eat.color
+
+      start_coordinates = ChessHelper.parse_algebraic(start_position)
+      end_coordinates = ChessHelper.parse_algebraic(end_position)
+
+      new_position = start_coordinates[1] < end_coordinates[1] ? [start_coordinates[0], start_coordinates[1] + 1] : [start_coordinates[0], start_coordinates[1] - 1]
+      place_piece(piece_to_eat, ChessHelper.parse_coordinates(new_position))
+    end
 
     second_last_move = @last_move[:move].dup
     second_last_move_enpassantable = last_move_could_en_passant?
-    p @last_move
+    #p @last_move
     # puts "second last move before updating last move is #{second_last_move}"
 
     moved_piece = piece_at(start_position)
@@ -125,7 +142,7 @@ class Board
     move = @last_move[:move]
 
     start_pos, end_pos = ChessHelper.parse_algebraic_move(move)
-    p move
+    # p move
 
     return true if piece.is_a?(Pawn) && (start_pos[0] - end_pos[0]).abs == 2
 
@@ -242,8 +259,6 @@ class Board
 
   # utilities to print the board
   def print_cell_at(position)
-    cell_color = (ChessHelper.parse_algebraic(position).sum).even? ? :none : :red
-
     print_empty_cell(position) if cell_empty?(position)
     print_piece(position) unless cell_empty?(position)
   end
@@ -262,20 +277,22 @@ class Board
   # end utilities to print the board
 
   def initialize_board
-    place_new_pieces([
-                       [Pawn, :black, ['a7', 'b7', 'c7', 'd7', 'e7', 'f7', 'g7', 'h7']],
-                       [Pawn, :white, ['a2', 'b2', 'c2', 'd2', 'e2', 'f2', 'g2', 'h2']],
-                       [Rook, :black, ['a8', 'h8']],
-                       [Rook, :white, ['a1', 'h1']],
-                       [Knight, :black, ['b8', 'g8']],
-                       [Knight, :white, ['b1', 'g1']],
-                       [Bishop, :black, ['c8', 'f8']],
-                       [Bishop, :white, ['c1', 'f1']],
-                       [King, :black, ['e8']],
-                       [King, :white, ['e1']],
-                       [Queen, :black, ['d8']],
-                       [Queen, :white, ['d1']]
-                     ])
+    # place_new_pieces([
+    #                    [Pawn, :black, ['a7', 'b7', 'c7', 'd7', 'e7', 'f7', 'g7', 'h7']],
+    #                    [Pawn, :white, ['a2', 'b2', 'c2', 'd2', 'e2', 'f2', 'g2', 'h2']],
+    #                    [Rook, :black, ['a8', 'h8']],
+    #                    [Rook, :white, ['a1', 'h1']],
+    #                    [Knight, :black, ['b8', 'g8']],
+    #                    [Knight, :white, ['b1', 'g1']],
+    #                    [Bishop, :black, ['c8', 'f8']],
+    #                    [Bishop, :white, ['c1', 'f1']],
+    #                    [King, :black, ['e8']],
+    #                    [King, :white, ['e1']],
+    #                    [Queen, :black, ['d8']],
+    #                    [Queen, :white, ['d1']]
+    #                  ])
+
+    place_new_pieces([[Rook, :white, %w[a1 h1]], [King, :white, ['e1']], [Rook, :black, %w[a8]],])
     @last_move = {
       piece: nil,
       move: ""
