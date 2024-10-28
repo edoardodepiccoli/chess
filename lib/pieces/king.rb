@@ -15,11 +15,11 @@ class King < Piece
     steps = [[1, 1], [1, 0], [1, -1], [0, 1], [0, -1], [-1, 1], [-1, 0], [-1, -1]]
 
     available_moves = steps
-      .map { |step| [current_position[0] + step[0], current_position[1] + step[1]] }
-      .filter { |position| position[0].between?(0, 7) && position[1].between?(0, 7) }
-      .filter { |position| board.cell_empty?(ChessHelper.parse_coordinates(position)) || board.piece_at(ChessHelper.parse_coordinates(position)).color != @color }
-      .map { |position| ChessHelper.parse_coordinates(position) }
-      .sort
+                      .map { |step| [current_position[0] + step[0], current_position[1] + step[1]] }
+                      .filter { |position| position[0].between?(0, 7) && position[1].between?(0, 7) }
+                      .filter { |position| board.cell_empty?(ChessHelper.parse_coordinates(position)) || board.piece_at(ChessHelper.parse_coordinates(position)).color != @color }
+                      .map { |position| ChessHelper.parse_coordinates(position) }
+                      .sort
 
     (available_moves + castling_moves(current_position, board)).sort
   end
@@ -34,6 +34,7 @@ class King < Piece
 
     0.upto(4) do
       break unless (right_traversing_position[1] + 1).between?(0, 7)
+
       right_traversing_position = [right_traversing_position[0], right_traversing_position[1] + 1]
       break unless board.piece_at(ChessHelper.parse_coordinates([right_traversing_position[0], right_traversing_position[1]])).nil?
     end
@@ -47,6 +48,7 @@ class King < Piece
 
     0.upto(4) do
       break unless (left_traversing_position[1] - 1).between?(0, 7)
+
       left_traversing_position = [left_traversing_position[0], left_traversing_position[1] - 1]
       break unless board.piece_at(ChessHelper.parse_coordinates([left_traversing_position[0], left_traversing_position[1]])).nil?
     end
