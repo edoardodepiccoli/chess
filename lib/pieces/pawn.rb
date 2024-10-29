@@ -10,7 +10,7 @@ class Pawn < Piece
     current_row, current_col = current_pos
     row_offset = @color == :white ? -1 : 1
 
-    steps = if has_not_moved_yet?(current_pos)
+    steps = if not_moved_yet?(current_pos)
               [[row_offset, 0], [row_offset * 2, 0]]
             else
               [[row_offset, 0]]
@@ -22,7 +22,7 @@ class Pawn < Piece
       .filter { |pos| board.cell_at(pos).nil? }
   end
 
-  def has_not_moved_yet?(current_pos)
+  def not_moved_yet?(current_pos)
     current_row, _current_col = current_pos
     starting_row = @color == :white ? 6 : 1
 
