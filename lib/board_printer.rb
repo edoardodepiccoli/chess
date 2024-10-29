@@ -12,7 +12,7 @@ module BoardPrinter
   end
 
   def print_cell(pos)
-    if cell_empty(pos)
+    if cell_empty?(pos)
       print_empty_cell(pos)
     else
       print_piece_at(pos)

@@ -19,8 +19,7 @@ class Game
     current_player = @players.first
     player_move = current_player.move # [[start_row, start_col], [end_row, end_col]]
 
-    until @board.move_valid?(current_player, move)
-      print 'invalid move, retry: '
+    until @board.move_valid?(current_player, player_move)
       player_move = current_player.move # [[start_row, start_col], [end_row, end_col]]
     end
 
@@ -31,6 +30,6 @@ class Game
   end
 
   def switch_turn
-    @player = @players.rotate
+    @players = @players.rotate
   end
 end

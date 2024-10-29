@@ -1,14 +1,16 @@
 class Player
+  attr_reader :color
+
   def initialize(color)
     @color = color
   end
 
   def move
-    print 'enter your move: '
+    print "player #{@color} enter your move: "
     player_input = gets.chomp
 
     until input_valid?(player_input)
-      print 'please enter a valid input: '
+      print "please enter a valid input: "
       player_input = gets.chomp
     end
 

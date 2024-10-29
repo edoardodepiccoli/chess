@@ -4,4 +4,8 @@ class Piece
   def initialize(color)
     @color = color
   end
+
+  def available_cells(current_pos, board)
+    []
+  end
 end
