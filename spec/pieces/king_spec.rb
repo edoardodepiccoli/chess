@@ -56,5 +56,18 @@ describe King do
         expect(king.available_positions([4, 0], board)).to eql([[3, 0], [3, 1], [5, 1], [5, 0]].sort)
       end
     end
+
+    context 'when can castle' do
+      it 'should return all positions including rook position' do
+        board = Board.new
+        board.clear_board
+
+        board.place_new_pieces([
+                                 [Rook, :white, [[7, 7]]]
+                               ])
+
+        expect(king.available_positions([7, 4], board)).to eql([[7, 3], [7, 5], [6, 3], [6, 4], [6, 5], [7, 7]].sort)
+      end
+    end
   end
 end

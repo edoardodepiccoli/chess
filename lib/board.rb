@@ -13,21 +13,23 @@ require_relative 'pieces/rook'
 class Board
   include BoardPrinter
 
+  attr_reader :moves_history
+
   def initialize
     @board = Array.new(8) { Array.new(8, nil) }
 
     place_new_pieces(
       [
         [Pawn, :black, [[1, 0], [1, 1], [1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7]]],
-        [Rook, :black, [[0, 0], [0,  7]]],
-        [Knight, :black, [[0, 1], [0,  6]]],
-        [Bishop, :black, [[0, 2], [0,  5]]],
+        [Rook, :black, [[0, 0], [0, 7]]],
+        [Knight, :black, [[0, 1], [0, 6]]],
+        [Bishop, :black, [[0, 2], [0, 5]]],
         [Queen, :black, [[0, 3]]],
         [King, :black, [[0, 4]]],
         [Pawn, :white, [[6, 0], [6, 1], [6, 2], [6, 3], [6, 4], [6, 5], [6, 6], [6, 7]]],
-        [Rook, :white, [[7, 0], [7,  7]]],
-        [Knight, :white, [[7, 1], [7,  6]]],
-        [Bishop, :white, [[7, 2], [7,  5]]],
+        [Rook, :white, [[7, 0], [7, 7]]],
+        [Knight, :white, [[7, 1], [7, 6]]],
+        [Bishop, :white, [[7, 2], [7, 5]]],
         [Queen, :white, [[7, 3]]],
         [King, :white, [[7, 4]]],
       ]
@@ -48,9 +50,76 @@ class Board
 
     @pieces_eaten << piece_to_eat unless piece_to_eat.nil?
     @moves_history << {
+      piece: piece_to_move,
       move: move,
-      pieces_eaten: piece_to_eat,
+      piece_eaten: piece_to_eat,
     }
+
+    puts "move enables en passant? #{move_enables_en_passant?(@moves_history.last)}"
+
+    perform_en_passant if last_move_was_en_passant?
+    if piece_to_move.is_a?(King) || piece_to_move.is_a?(Rook)
+      piece_to_move.not_moved_yet = false
+    end
+
+    if piece_to_move.is_a?(King) && piece_to_eat.is_a?(Rook) && piece_to_move.color == piece_to_eat.color
+      col_offset = end_pos[1] > start_pos[1] ? 1 : -1
+      place_piece(piece_to_eat, [start_pos[0], start_pos[1] + col_offset])
+    end
+  end
+
+  def perform_en_passant
+    start_pos, end_pos = @moves_history.last[:move]
+    end_row, end_col = end_pos
+
+    pawn_color = cell_at(end_pos).color
+    move_direction = pawn_color == :white ? -1 : 1
+
+    remove_pos = [end_row - move_direction, end_col]
+    @pieces_eaten << cell_at(remove_pos)
+    @moves_history.last[:piece_eaten] = cell_at(remove_pos)
+
+    clear_cell(remove_pos)
+  end
+
+  def cell_empty?(pos)
+    cell_at(pos).nil?
+  end
+
+  def last_move_was_en_passant?
+    second_last_move = @moves_history[-2]
+    return false if second_last_move.nil?
+
+    last_move = @moves_history[-1]
+
+    start_pos, end_pos = last_move[:move] unless last_move[:move].nil?
+    start_row, start_col = start_pos
+    end_row, end_col = end_pos
+
+    piece = cell_at(end_pos)
+
+    return false unless move_enables_en_passant?(second_last_move)
+    return false unless piece.is_a?(Pawn)
+    return false if start_col == end_col
+
+    move_direction = piece.color == :white ? -1 : 1
+    piece_behind = cell_at([end_row - move_direction, end_col])
+    return true if piece_behind.is_a?(Pawn) && piece_behind.color != piece.color
+
+    false
+  end
+
+  def move_enables_en_passant?(move_entry)
+    start_pos, end_pos = move_entry[:move]
+
+    start_row, _start_col = start_pos
+    end_row, _end_col = end_pos
+
+    piece = move_entry[:piece]
+
+    return true if piece.is_a?(Pawn) && ((end_row - start_row).abs == 2)
+
+    false
   end
 
   def make_fake_move(move)
@@ -165,10 +234,6 @@ class Board
     end
 
     true
-  end
-
-  def cell_empty?(pos)
-    cell_at(pos).nil?
   end
 
   def place_piece(piece, pos)

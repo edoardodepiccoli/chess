@@ -93,5 +93,19 @@ describe Pawn do
         expect(black_pawn.available_positions([4, 2], board)).to eql([[5, 2], [5, 3]].sort)
       end
     end
+
+    context 'when can perform en passant' do
+      it 'should show eating move for en passant available' do
+        board = Board.new
+        board.clear_board
+
+        board.place_new_pieces([
+                                 [Pawn, :black, [[1, 1]]],
+                               ])
+        board.make_move([[1, 1], [3, 1]])
+
+        expect(white_pawn.available_positions([3, 0], board)).to eql([[2, 0], [2, 1]].sort)
+      end
+    end
   end
 end

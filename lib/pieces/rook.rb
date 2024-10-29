@@ -1,9 +1,13 @@
 require_relative 'piece'
 
 class Rook < Piece
+  attr_accessor :not_moved_yet
+
   def initialize(color)
     super(color)
     @unicode = '♖'
+
+    @not_moved_yet = true
   end
 
   def available_positions(current_pos, board)

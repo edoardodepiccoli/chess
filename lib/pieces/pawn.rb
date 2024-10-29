@@ -29,7 +29,21 @@ class Pawn < Piece
                                .filter { |row, col| row.between?(0, 7) && col.between?(0, 7) }
                                .filter { |pos| !board.cell_at(pos).nil? && board.cell_at(pos).color != @color }
 
-    (available_vertical_positions + available_eating_position).sort
+    lateral_positions = [[current_row, current_col - 1], [current_row, current_col + 1]]
+    available_en_passant_moves = []
+
+    lateral_positions.each do |row, col|
+      piece = board.cell_at([row, col])
+      next unless row.between?(0, 7) && col.between?(0, 7)
+      next if piece.nil?
+      next unless piece.is_a?(Pawn)
+      next if board.moves_history.empty?
+      next unless board.move_enables_en_passant?(board.moves_history.last)
+
+      available_en_passant_moves << [(current_row + row_offset), (current_col + (col - current_col))]
+    end
+
+    (available_vertical_positions + available_eating_position + available_en_passant_moves).sort
   end
 
   def not_moved_yet?(current_pos)

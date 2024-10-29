@@ -14,7 +14,7 @@ class Game
   private
 
   def play_round
-    system('clear')
+    #system('clear')
     @board.print_board
 
     current_player = @players.first
@@ -27,6 +27,15 @@ class Game
     @board.make_move(player_move)
 
     switch_turn
+
+    if @board.checkmate?(@players.first)
+      system('clear')
+      @board.print_board
+
+      puts "checkmate for #{@players.first.color}"
+      return
+    end
+
     play_round
   end
 
