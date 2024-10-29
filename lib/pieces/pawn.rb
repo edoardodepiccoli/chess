@@ -19,6 +19,7 @@ class Pawn < Piece
     steps
       .map { |row_offset, _col_offset| [current_row + row_offset, current_col] }
       .filter { |row, col| row.between?(0, 7) && col.between?(0, 7) }
+      .filter { |pos| board.cell_at(pos).nil? }
   end
 
   def has_not_moved_yet?(current_pos)
