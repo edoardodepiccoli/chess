@@ -44,6 +44,4 @@ class Board
     row, col = pos
     @board[row][col] = nil
   end
-
-  def place_new_pieces(entries)
 end
