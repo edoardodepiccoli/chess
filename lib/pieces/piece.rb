@@ -5,7 +5,7 @@ class Piece
     @color = color
   end
 
-  def available_cells(current_pos, board)
+  def available_positions(current_pos, board)
     []
   end
 end

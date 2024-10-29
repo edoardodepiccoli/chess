@@ -19,7 +19,17 @@ class Board
     place_new_pieces(
       [
         [Pawn, :black, [[1, 0], [1, 1], [1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7]]],
-        [Pawn, :white, [[6, 0], [6, 1], [6, 2], [6, 3], [6, 4], [6, 5], [6, 6], [6, 7]]]
+        [Rook, :black, [[0, 0], [0,  7]]],
+        [Knight, :black, [[0, 1], [0,  6]]],
+        [Bishop, :black, [[0, 2], [0,  5]]],
+        [Queen, :black, [[0, 3]]],
+        [King, :black, [[0, 4]]],
+        [Pawn, :white, [[6, 0], [6, 1], [6, 2], [6, 3], [6, 4], [6, 5], [6, 6], [6, 7]]],
+        [Rook, :white, [[7, 0], [7,  7]]],
+        [Knight, :white, [[7, 1], [7,  6]]],
+        [Bishop, :white, [[7, 2], [7,  5]]],
+        [Queen, :white, [[7, 3]]],
+        [King, :white, [[7, 4]]],
       ]
     )
 
@@ -119,5 +129,9 @@ class Board
   def clear_cell(pos)
     row, col = pos
     @board[row][col] = nil
+  end
+
+  def clear_board
+    @board = Array.new(8) { Array.new(8, nil) }
   end
 end
