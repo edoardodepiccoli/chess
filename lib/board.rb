@@ -37,7 +37,6 @@ class Board
     @moves_history = []
   end
 
-  # [[start_row, start_col], [end_row, end_col]]
   def make_move(move)
     start_pos, end_pos = move
 
@@ -52,14 +51,79 @@ class Board
       move: move,
       pieces_eaten: piece_to_eat,
     }
-
-    # print "eaten pieces: #{@pieces_eaten}\n"
-    # print "moves history: #{@moves_history}\n"
   end
 
   def make_fake_move(move)
+    start_pos, end_pos = move
 
+    piece_to_move = cell_at(start_pos)
+
+    place_piece(piece_to_move, end_pos)
+    clear_cell(start_pos)
   end
+
+  def dangerous_move?(player, move)
+    color = player.color
+
+    temp = @board.map(&:dup)
+
+    make_fake_move(move)
+    if king_in_danger?(color)
+      puts 'move leaves the king in danger, try another one'
+      @board = temp.map(&:dup)
+      return true
+    end
+
+    @board = temp.map(&:dup)
+    false
+  end
+
+  def checkmate?(player)
+    return true unless player_has_available_moves?(player)
+
+    false
+  end
+
+  def player_has_available_moves?(player)
+    all_available_moves = []
+
+    @board.each_with_index do |row, row_index|
+      row.each_with_index do |piece, col_index|
+        next if piece.nil? || piece.color != player.color
+
+        all_available_moves += piece.available_positions([row_index, col_index], self).map { |end_pos| [[row_index, col_index], end_pos] }
+      end
+    end
+
+    return false if all_available_moves.all? { |move| dangerous_move?(player, move) }
+
+    true
+  end
+
+  def king_in_danger?(color)
+    king_position = find_king(color)
+
+    all_opponent_positions = []
+
+    @board.each_with_index do |row, row_index|
+      row.each_with_index do |piece, col_index|
+        all_opponent_positions += piece.available_positions([row_index, col_index], self) if piece.is_a?(Piece) && piece.color != color
+      end
+    end
+
+    all_opponent_positions.include?(king_position)
+  end
+
+  def find_king(color)
+    @board.each_with_index do |row, row_index|
+      row.each_with_index do |piece, col_index|
+        return [row_index, col_index] if piece.is_a?(King) && piece.color == color
+      end
+    end
+  end
+
+  # enable en passant
+  # was en passant
 
   def move_valid?(player, move)
     start_pos, end_pos = move
@@ -69,6 +133,7 @@ class Board
 
     piece_to_move = cell_at(start_pos)
     return false unless ending_position_available?(piece_to_move, start_pos, end_pos)
+    return false if dangerous_move?(player, move)
 
     true
   end
