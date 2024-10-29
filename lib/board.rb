@@ -53,8 +53,8 @@ class Board
       pieces_eaten: piece_to_eat,
     }
 
-    print "eaten pieces: #{@pieces_eaten}\n"
-    print "moves history: #{@moves_history}\n"
+    # print "eaten pieces: #{@pieces_eaten}\n"
+    # print "moves history: #{@moves_history}\n"
   end
 
   def make_fake_move(move)
