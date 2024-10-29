@@ -14,7 +14,7 @@ class Game
   private
 
   def play_round
-    #system('clear')
+    system('clear')
     @board.print_board
 
     current_player = @players.first

@@ -35,6 +35,18 @@ class Board
       ]
     )
 
+    clear_board
+
+    place_new_pieces(
+      [
+        [Pawn, :white, [[1, 0]]],
+        [King, :black, [[0, 4]]],
+        [King, :white, [[7, 4]]],
+        [Rook, :white ,[[5, 7]]],
+        [Rook, :black, [[0, 7]]],
+      ]
+    )
+
     @pieces_eaten = []
     @moves_history = []
   end
@@ -48,14 +60,12 @@ class Board
     place_piece(piece_to_move, end_pos)
     clear_cell(start_pos)
 
-    @pieces_eaten << piece_to_eat unless piece_to_eat.nil?
+    @pieces_eaten << piece_to_eat unless piece_to_eat.nil? || piece_to_eat.color == piece_to_move.color
     @moves_history << {
       piece: piece_to_move,
       move: move,
       piece_eaten: piece_to_eat,
     }
-
-    puts "move enables en passant? #{move_enables_en_passant?(@moves_history.last)}"
 
     perform_en_passant if last_move_was_en_passant?
     if piece_to_move.is_a?(King) || piece_to_move.is_a?(Rook)
@@ -66,6 +76,49 @@ class Board
       col_offset = end_pos[1] > start_pos[1] ? 1 : -1
       place_piece(piece_to_eat, [start_pos[0], start_pos[1] + col_offset])
     end
+
+    perform_pawn_promotion if should_perform_pawn_promotion?
+  end
+
+  def perform_pawn_promotion
+    last_move = @moves_history.last
+
+    piece = last_move[:piece]
+    start_pos, end_pos = last_move[:move]
+
+    retrievable_pieces = @pieces_eaten.filter { |eaten_piece| eaten_piece.color == piece.color }.sort
+
+    retrievable_pieces.each_with_index do |piece, index|
+      puts "#{index} - #{piece.class.name}"
+    end
+
+    print "please choose a piece to bring back (type the number): "
+    user_input = gets.chomp
+
+    until user_input.match?(/\A[0-#{retrievable_pieces.size}]\z/)
+      print "please insert a valid index: "
+      user_input = gets.chomp
+    end
+
+    user_input = user_input.to_i
+
+    place_piece(retrievable_pieces[user_input], end_pos)
+  end
+
+  def should_perform_pawn_promotion?
+    last_move = @moves_history.last
+
+    piece = last_move[:piece]
+    start_pos, end_pos = last_move[:move]
+
+    end_row, end_col = end_pos
+
+    return false unless piece.is_a?(Pawn)
+    row_goal = piece.color == :white ? 0 : 7
+
+    return false unless end_row == row_goal
+
+    true
   end
 
   def perform_en_passant
