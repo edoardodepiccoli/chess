@@ -35,18 +35,6 @@ class Board
       ]
     )
 
-    clear_board
-
-    place_new_pieces(
-      [
-        [Pawn, :white, [[1, 0]]],
-        [King, :black, [[0, 4]]],
-        [King, :white, [[7, 4]]],
-        [Rook, :white ,[[5, 7]]],
-        [Rook, :black, [[0, 7]]],
-      ]
-    )
-
     @pieces_eaten = []
     @moves_history = []
   end
