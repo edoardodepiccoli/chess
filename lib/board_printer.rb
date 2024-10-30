@@ -20,7 +20,7 @@ module BoardPrinter
   end
 
   def print_empty_cell(pos)
-    bg_color = pos.sum.even? ? :red : :black
+    bg_color = pos.sum.even? ? :red : :none
     print '   '.colorize(background: bg_color)
   end
 
@@ -30,7 +30,7 @@ module BoardPrinter
     unicode = piece.unicode
     color = piece.color
 
-    bg_color = pos.sum.even? ? :red : :black
+    bg_color = pos.sum.even? ? :red : :none
     print " #{unicode} ".colorize(color).colorize(background: bg_color)
   end
 end
