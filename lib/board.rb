@@ -74,7 +74,7 @@ class Board
     piece = last_move[:piece]
     start_pos, end_pos = last_move[:move]
 
-    retrievable_pieces = @pieces_eaten.filter { |eaten_piece| eaten_piece.color == piece.color }.sort
+    retrievable_pieces = @pieces_eaten.filter { |eaten_piece| eaten_piece.color == piece.color }
 
     retrievable_pieces.each_with_index do |piece, index|
       puts "#{index} - #{piece.class.name}"
