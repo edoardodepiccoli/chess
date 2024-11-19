@@ -6,7 +6,7 @@ describe Player do
   describe '#input_valid?' do
     context 'when given a valid input' do
       it 'should return true' do
-        expect(player.send(:input_valid?, 'a0 c5')).to eql(true)
+        expect(player.send(:input_valid?, 'a1 c5')).to eql(true)
       end
     end
 

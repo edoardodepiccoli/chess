@@ -10,7 +10,7 @@ class Player
     player_input = gets.chomp
 
     until input_valid?(player_input)
-      print "please enter a valid input: "
+      print 'please enter a valid input: '
       player_input = gets.chomp
     end
 
@@ -24,6 +24,6 @@ class Player
   private
 
   def input_valid?(input)
-    input.match?(/^[0-7]{2} [0-7]{2}$/)
+    input.match?(/^[a-h][1-8] [a-h][1-8]$/)
   end
 end
