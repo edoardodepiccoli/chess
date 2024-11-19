@@ -70,12 +70,12 @@ describe Board do
         expect(board.checkmate?(player)).to eql(false)
       end
 
-      it "should return false" do
+      it 'should return false' do
         board.clear_board
         board.place_new_pieces([
                                  [Rook, :white, [[7, 0]]],
                                  [Rook, :black, [[0, 0]]],
-                                 [King, :white, [[0, 7]]],
+                                 [King, :white, [[0, 7]]]
                                ])
 
         player = double
@@ -92,7 +92,7 @@ describe Board do
                                  [Rook, :black, [[7, 7]]],
                                  [Rook, :black, [[0, 0]]],
                                  [Bishop, :black, [[7, 0]]],
-                                 [King, :white, [[0, 7]]],
+                                 [King, :white, [[0, 7]]]
                                ])
 
         player = double
