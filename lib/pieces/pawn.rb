@@ -46,8 +46,8 @@ class Pawn < Piece
       next if board.moves_history.empty?
       next unless board.move_enables_en_passant?(board.moves_history.last)
 
-      last_move_piece = board.moves_history.last['piece']
-      last_move_ending_cell = board.moves_history.last['move']
+      last_move_ending_cell = board.moves_history.last[:move][1]
+      next unless (current_col - last_move_ending_cell[1]).abs == 1 && (current_row == last_move_ending_cell[0])
 
       available_en_passant_moves << [(current_row + row_offset), (current_col + (col - current_col))]
     end
