@@ -1,6 +1,27 @@
 class Player
   attr_reader :color
 
+  def letter_to_col(letter)
+    mappings = {
+      0 => 'a',
+      1 => 'b',
+      2 => 'c',
+      3 => 'd',
+      4 => 'e',
+      5 => 'f',
+      6 => 'g',
+      7 => 'h'
+    }
+
+    reverse_mappings = mappings.invert
+
+    reverse_mappings[letter]
+  end
+
+  def number_to_row(number)
+    8 - number
+  end
+
   def initialize(color)
     @color = color
   end
@@ -15,8 +36,16 @@ class Player
     end
 
     start_pos, end_pos = player_input.split ' '
-    start_row, start_col = start_pos.split('').map(&:to_i)
-    end_row, end_col = end_pos.split('').map(&:to_i)
+
+    start_col, start_row = start_pos.split('')
+    start_col = letter_to_col(start_col)
+    start_row = number_to_row(start_row.to_i)
+
+    end_col, end_row = end_pos.split('')
+    end_col = letter_to_col(end_col)
+    end_row = number_to_row(end_row.to_i)
+
+    p [[start_row, start_col], [end_row, end_col]]
 
     [[start_row, start_col], [end_row, end_col]]
   end
