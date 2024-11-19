@@ -2,11 +2,11 @@ require_relative '../lib/player'
 
 describe Player do
   subject(:player) { Player.new(:white) }
-  
+
   describe '#input_valid?' do
     context 'when given a valid input' do
       it 'should return true' do
-        expect(player.send(:input_valid?, '00 23')).to eql(true)
+        expect(player.send(:input_valid?, 'a0 c5')).to eql(true)
       end
     end
 
@@ -29,6 +29,10 @@ describe Player do
 
       it 'should return false' do
         expect(player.send(:input_valid?, 'ab de')).to eql(false)
+      end
+
+      it 'should return false' do
+        expect(player.send(:input_valid?, '00 02')).to eql(false)
       end
     end
   end
