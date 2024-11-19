@@ -5,6 +5,7 @@ This is a simple, text-based Chess game built in Ruby, created as part of [The O
 ## Getting Started
 
 To play the game:
+
 1. Navigate to the `lib` folder in your terminal.
 2. Run the game with the command:
    ```bash
@@ -17,7 +18,7 @@ This project began as a learning exercise in object-oriented programming and has
 
 - **Game Serialization**: Save and load game states to resume play at any time.
 - **Code Refactoring**: Further refine the codebase by making `Board` methods private to better adhere to object-oriented programming principles.
-- **Algebraic Notation**: Add support for algebraic notation to make moves more intuitive and closer to standard chess notation.
+- **Algebraic Notation** (done!): Add support for algebraic notation to make moves more intuitive and closer to standard chess notation.
 
 ## Lessons Learned
 
