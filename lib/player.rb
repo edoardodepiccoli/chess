@@ -45,8 +45,6 @@ class Player
     end_col = letter_to_col(end_col)
     end_row = number_to_row(end_row.to_i)
 
-    p [[start_row, start_col], [end_row, end_col]]
-
     [[start_row, start_col], [end_row, end_col]]
   end
 
